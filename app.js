@@ -123,13 +123,47 @@ function makeTableHeader() {
   cookieTable.appendChild(trEl);
 }
 
-// Calls the render method for each store
+// Function to render each store
 function makeTableRows() {
   for (var i = 0; i < stores.length; i++) {
     stores[i].render();
   }
 }
 
-makeTableHeader();
+// Stretch Goal
+// Make the footer table that totals each column
+function makeTableFooter() {
+  var trEl = document.createElement("tr");
 
+  var hourlyTotalsFooter = document.createElement("td");
+  hourlyTotalsFooter.textContent = "Totals";
+  trEl.appendChild(hourlyTotalsFooter);
+
+  // Add up the totals for each column (time slot)
+  for (var i = 0; i < times.length; i++) {
+    var tdEl = document.createElement("td");
+    var columnTotal = 0;
+    for (var storeArrayIndex = 0; storeArrayIndex < stores.length; storeArrayIndex++) {
+      columnTotal += stores[storeArrayIndex].cookiesEachHour[i];
+    }
+    tdEl.textContent = columnTotal;
+    trEl.appendChild(tdEl);
+  }
+
+  // Adds up the store totals column
+  var dailyTotalFooter = document.createElement("td");
+  var dailyTotalCookies = 0;
+
+  for (var i = 0; i < stores.length; i++) {
+    dailyTotalCookies += stores[i].totalCookiesPerDay;
+  }
+  dailyTotalFooter.textContent = dailyTotalCookies;
+  trEl.appendChild(dailyTotalFooter);
+
+  // Adds the finished footer row to the table
+  cookieTable.appendChild(trEl);
+}
+
+makeTableHeader();
 makeTableRows();
+makeTableFooter();

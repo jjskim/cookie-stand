@@ -6,9 +6,12 @@ var times = ["6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "
 // Array to store the stores
 var stores = [];
 
+// Grab the "Parent Element" that will dictate where the rows will go
+var cookieTable = document.getElementById("sales_table");
+
 // object constructor for a single store
 function Store(location, minCustomersPerHour, maxCustomersPerHour, averageCookiesPerCustomer) {
-  this.locataion = location;
+  this.location = location;
   this.minCustomersPerHour = minCustomersPerHour;
   this.maxCustomersPerHour = maxCustomersPerHour;
   this.averageCookiesPerCustomer = averageCookiesPerCustomer;
@@ -36,6 +39,36 @@ function Store(location, minCustomersPerHour, maxCustomersPerHour, averageCookie
     }
   };
 
+  this.render = function() {
+
+    // Calls the dailyTotal method to generate cookies & customers per hours
+    // i.e. generates the data to display
+    this.dailyTotal();
+
+    // Makes the row
+    var trEl = document.createElement("tr");
+
+    // For the store name data entry
+    var storeName = document.createElement("td");
+    storeName.textContent = this.location;
+    trEl.appendChild(storeName);
+
+    // For each cookies per hour
+    for (var i = 0; i < times.length; i++) {
+      var tdEl = document.createElement("td");
+      tdEl.textContent = this.cookiesEachHour[i];
+      trEl.appendChild(tdEl);
+    }
+
+    // For the daily total entry
+    var dailyTotal = document.createElement("td");
+    dailyTotal.textContent = this.totalCookiesPerDay;
+    trEl.appendChild(dailyTotal);
+
+    // Appends the completed row to the table tag
+    cookieTable.appendChild(trEl);
+  };
+
   // stores.push(this); // adds each store into the store array outside
 }
 
@@ -53,27 +86,27 @@ stores.push(capitolHill);
 stores.push(alki);
 
 // Calls each stores dailyTotal method to generate customers per hr, cookies per hr, and total cookies sold for each store
-function simulateSales() {
-  for (var i = 0; i < stores.length; i++) {
-    stores[i].dailyTotal();
-  }
-}
+// function simulateSales() {
+//   for (var i = 0; i < stores.length; i++) {
+//     stores[i].dailyTotal();
+//   }
+// }
+//
+// simulateSales();
 
-simulateSales();
-
-// Grab the "Parent Element" that will dictate where the rows will go
-var storeTable = document.getElementById("sales_table");
 
 function makeTableHeader() {
+
 }
 
+// Calls the render method for each store
 function makeTableRows() {
   for (var i = 0; i < stores.length; i++) {
-    var liEl = document.createElement("li");                // Make the element you're going to put in
-    liEl.textContent = mahClass[i].firstName;               // Give that element content
-    studentList.appendChild(liEl);                          // Put the element in the place you accessed
+    stores[i].render();
   }
 }
+
+makeTableRows();
 
 // // 1st and Pike
 // var pike = {

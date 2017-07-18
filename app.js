@@ -3,240 +3,256 @@
 // Times to display each number of cookie sales
 var times = ["6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm"];
 
-// 1st and Pike
-var pike = {
-  minCustPerHr: 23,
-  maxCustPerHr: 65,
-  avgCookiesPerCust: 6.3,
-  customersEachHour: [],
-  cookiesEachHour : [],
-  totalCookiesPerDay: 0,
-  generateCustomers: function() {
+// Array to store the stores
+var stores = [];
+
+// Grab the "Parent Element" that will dictate where the sales table will go
+var cookieTable = document.getElementById("sales_table");
+
+// Grab the "Parent Element" that will dictate where the employees table will go
+var employeeTable = document.getElementById("employee_table");
+
+// object constructor for a single store
+function Store(location, minCustomersPerHour, maxCustomersPerHour, averageCookiesPerCustomer) {
+  this.location = location;
+  this.minCustomersPerHour = minCustomersPerHour;
+  this.maxCustomersPerHour = maxCustomersPerHour;
+  this.averageCookiesPerCustomer = averageCookiesPerCustomer;
+  this.customersEachHour = [];
+  this.cookiesEachHour = [];
+  this.totalCookiesPerDay = 0;
+
+  this.generateCustomers = function() {
     for (var i = 0; i < times.length; i++) {
-      this.customersEachHour[i] = Math.floor(Math.random() * (this.maxCustPerHr - this.minCustPerHr + 1)) + this.minCustPerHr;
+      this.customersEachHour.push(Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour + 1)) + this.minCustomersPerHour);
     }
-  },
-  generateSales: function() {
-    for (var j = 0; j < times.length; j++) {
-      this.cookiesEachHour[j] = Math.floor(this.customersEachHour[j] * this.avgCookiesPerCust);
-    }
-  },
-  dailyTotal: function() {
-    for (var k = 0; k < this.cookiesEachHour.length; k++) {
-      this.totalCookiesPerDay += this.cookiesEachHour[k];
-    }
-  },
-  render: function() {
-    var pikeUL = document.getElementById("first_and_pike");
-    // Need a for loop to iterate over the array of cookies per hour
-    for (var l = 0; l < this.cookiesEachHour.length; l++) {
+  };
 
-      // Step 1: Create an element
-      var liEl = document.createElement("li");
-
-      // Step 2: Give it content
-      liEl.textContent = times[l] + ": " + this.cookiesEachHour[l] + " cookies";
-
-      // Step 3: Append it to a certain place in the DOM
-      pikeUL.appendChild(liEl);
-    }
-    var dailyTotal = document.createElement("li");
-    dailyTotal.textContent = "Total: " + this.totalCookiesPerDay + " cookies";
-    pikeUL.appendChild(dailyTotal);
-  }
-};
-pike.generateCustomers();
-pike.generateSales();
-pike.dailyTotal();
-pike.render();
-
-// Seatac Airport
-var seatac = {
-  minCustPerHr: 3,
-  maxCustPerHr: 24,
-  avgCookiesPerCust: 1.2,
-  customersEachHour: [],
-  cookiesEachHour : [],
-  totalCookiesPerDay: 0,
-  generateCustomers: function() {
+  this.generateSales = function() {
+    this.generateCustomers();
     for (var i = 0; i < times.length; i++) {
-      this.customersEachHour[i] = Math.floor(Math.random() * (this.maxCustPerHr - this.minCustPerHr + 1)) + this.minCustPerHr;
+      this.cookiesEachHour.push(Math.ceil(this.customersEachHour[i] * this.averageCookiesPerCustomer));
     }
-  },
-  generateSales: function() {
-    for (var j = 0; j < times.length; j++) {
-      this.cookiesEachHour[j] = Math.floor(this.customersEachHour[j] * this.avgCookiesPerCust);
-    }
-  },
-  dailyTotal: function() {
-    for (var k = 0; k < this.cookiesEachHour.length; k++) {
-      this.totalCookiesPerDay += this.cookiesEachHour[k];
-    }
-  },
-  render: function() {
-    var seatacUL = document.getElementById("seatac_airport");
-    // Need a for loop to iterate over the array of cookies per hour
-    for (var l = 0; l < this.cookiesEachHour.length; l++) {
-      
-      // Step 1: Create an element
-      var liEl = document.createElement("li");
+  };
 
-      // Step 2: Give it content
-      liEl.textContent = times[l] + ": " + this.cookiesEachHour[l] + " cookies";
-
-      // Step 3: Append it to a certain place in the DOM
-      seatacUL.appendChild(liEl);
-    }
-    var liEL = document.createElement("li");
-    liEl.textContent = "Total: " + this.totalCookiesPerDay + " cookies";
-    seatacUL.appendChild(liEl);
-  }
-};
-seatac.generateCustomers();
-seatac.generateSales();
-seatac.dailyTotal();
-seatac.render();
-
-
-// Seattle Center
-var seattleCenter = {
-  minCustPerHr: 11,
-  maxCustPerHr: 38,
-  avgCookiesPerCust: 3.7,
-  customersEachHour: [],
-  cookiesEachHour : [],
-  totalCookiesPerDay: 0,
-  generateCustomers: function() {
+  this.dailyTotal = function() {
+    this.generateSales();
     for (var i = 0; i < times.length; i++) {
-      this.customersEachHour[i] = Math.floor(Math.random() * (this.maxCustPerHr - this.minCustPerHr + 1)) + this.minCustPerHr;
+      this.totalCookiesPerDay += this.cookiesEachHour[i];
     }
-  },
-  generateSales: function() {
-    for (var j = 0; j < times.length; j++) {
-      this.cookiesEachHour[j] = Math.floor(this.customersEachHour[j] * this.avgCookiesPerCust);
-    }
-  },
-  dailyTotal: function() {
-    for (var k = 0; k < this.cookiesEachHour.length; k++) {
-      this.totalCookiesPerDay += this.cookiesEachHour[k];
-    }
-  },
-  render: function() {
-    var seattleCenterUL = document.getElementById("seattle_center");
-    // Need a for loop to iterate over the array of cookies per hour
-    for (var l = 0; l < this.cookiesEachHour.length; l++) {
+  };
 
-      // Step 1: Create an element
-      var liEl = document.createElement("li");
+  this.render = function() {
 
-      // Step 2: Give it content
-      liEl.textContent = times[l] + ": " + this.cookiesEachHour[l] + " cookies";
+    // Calls the dailyTotal method to generate cookies & customers per hours
+    // i.e. generates the data to display
+    this.dailyTotal();
 
-      // Step 3: Append it to a certain place in the DOM
-      seattleCenterUL.appendChild(liEl);
-    }
-    var liEL = document.createElement("li");
-    liEl.textContent = "Total: " + this.totalCookiesPerDay + " cookies";
-    seattleCenterUL.appendChild(liEl);
-  }
-};
-seattleCenter.generateCustomers();
-seattleCenter.generateSales();
-seattleCenter.dailyTotal();
-seattleCenter.render();
+    // Makes the row
+    var trEl = document.createElement("tr");
 
+    // For the store name data entry
+    var storeName = document.createElement("td");
+    storeName.textContent = this.location;
+    trEl.appendChild(storeName);
 
-// Capitol Hill
-var capitolHill = {
-  minCustPerHr: 20,
-  maxCustPerHr: 38,
-  avgCookiesPerCust: 2.3,
-  customersEachHour: [],
-  cookiesEachHour : [],
-  totalCookiesPerDay: 0,
-  generateCustomers: function() {
+    // For each cookies per hour
     for (var i = 0; i < times.length; i++) {
-      this.customersEachHour[i] = Math.floor(Math.random() * (this.maxCustPerHr - this.minCustPerHr + 1)) + this.minCustPerHr;
+      var tdEl = document.createElement("td");
+      tdEl.textContent = this.cookiesEachHour[i];
+      trEl.appendChild(tdEl);
     }
-  },
-  generateSales: function() {
-    for (var j = 0; j < times.length; j++) {
-      this.cookiesEachHour[j] = Math.floor(this.customersEachHour[j] * this.avgCookiesPerCust);
-    }
-  },
-  dailyTotal: function() {
-    for (var k = 0; k < this.cookiesEachHour.length; k++) {
-      this.totalCookiesPerDay += this.cookiesEachHour[k];
-    }
-  },
-  render: function() {
-    var capitolHillUL = document.getElementById("capitol_hill");
-    // Need a for loop to iterate over the array of cookies per hour
-    for (var l = 0; l < this.cookiesEachHour.length; l++) {
 
-      // Step 1: Create an element
-      var liEl = document.createElement("li");
+    // For the daily total entry
+    var dailyTotal = document.createElement("td");
+    dailyTotal.textContent = this.totalCookiesPerDay;
+    trEl.appendChild(dailyTotal);
 
-      // Step 2: Give it content
-      liEl.textContent = times[l] + ": " + this.cookiesEachHour[l] + " cookies";
+    // Appends the completed row to the table tag
+    cookieTable.appendChild(trEl);
+  };
+}
 
-      // Step 3: Append it to a certain place in the DOM
-      capitolHillUL.appendChild(liEl);
-    }
-    var liEL = document.createElement("li");
-    liEl.textContent = "Total: " + this.totalCookiesPerDay + " cookies";
-    capitolHillUL.appendChild(liEl);
+var pike = new Store("1st and Pike", 23, 65, 6.3);
+var seatac = new Store("SeaTac Airport", 3, 24, 1.2);
+var seattleCenter = new Store("Seattle Center", 11, 38, 3.7);
+var capitolHill = new Store("Capitol Hill", 20, 38, 2.3);
+var alki = new Store("Alki", 2, 16, 4.6);
+
+
+stores.push(pike);
+stores.push(seatac);
+stores.push(seattleCenter);
+stores.push(capitolHill);
+stores.push(alki);
+
+// Creates the header row of the table:
+// Creates an entry for location
+//    then creates entries for the times
+//    then creates an entry for the total
+function makeTableHeader() {
+
+  // Creates the row element to hold the header row
+  var trEl = document.createElement("tr");
+
+  // Creates the header element for the store name label
+  var locationHeader = document.createElement("th");
+  locationHeader.textContent = "Location";
+  trEl.appendChild(locationHeader);
+
+  // Creates the header elements for the times
+  for (var i = 0; i < times.length; i++) {
+    var thEl = document.createElement("th");
+    thEl.textContent = times[i];
+    trEl.appendChild(thEl);
   }
-};
-capitolHill.generateCustomers();
-capitolHill.generateSales();
-capitolHill.dailyTotal();
-capitolHill.render();
 
+  // Creates the header element for the total label
+  var totalHeader = document.createElement("th");
+  totalHeader.textContent = "Daily Location Total";
+  trEl.appendChild(totalHeader);
 
-// Alki
-var alki = {
-  minCustPerHr: 2,
-  maxCustPerHr: 16,
-  avgCookiesPerCust: 4.6,
-  customersEachHour: [],
-  cookiesEachHour : [],
-  totalCookiesPerDay: 0,
-  generateCustomers: function() {
-    for (var i = 0; i < times.length; i++) {
-      this.customersEachHour[i] = Math.floor(Math.random() * (this.maxCustPerHr - this.minCustPerHr + 1)) + this.minCustPerHr;
-    }
-  },
-  generateSales: function() {
-    for (var j = 0; j < times.length; j++) {
-      this.cookiesEachHour[j] = Math.floor(this.customersEachHour[j] * this.avgCookiesPerCust);
-    }
-  },
-  dailyTotal: function() {
-    for (var k = 0; k < this.cookiesEachHour.length; k++) {
-      this.totalCookiesPerDay += this.cookiesEachHour[k];
-    }
-  },
-  render: function() {
-    var alkiUL = document.getElementById("alki");
-    // Need a for loop to iterate over the array of cookies per hour
-    for (var l = 0; l < this.cookiesEachHour.length; l++) {
+  cookieTable.appendChild(trEl);
+}
 
-      // Step 1: Create an element
-      var liEl = document.createElement("li");
-
-      // Step 2: Give it content
-      liEl.textContent = times[l] + ": " + this.cookiesEachHour[l] + " cookies";
-
-      // Step 3: Append it to a certain place in the DOM
-      alkiUL.appendChild(liEl);
-    }
-    var liEL = document.createElement("li");
-    liEl.textContent = "Total: " + this.totalCookiesPerDay + " cookies";
-    alkiUL.appendChild(liEl);
+// Function to render each store
+function makeTableRows() {
+  for (var i = 0; i < stores.length; i++) {
+    stores[i].render();
   }
-};
-alki.generateCustomers();
-alki.generateSales();
-alki.dailyTotal();
-alki.render();
+}
+
+// Stretch Goal
+// Make the footer table that totals each column
+function makeTableFooter() {
+  var trEl = document.createElement("tr");
+
+  var hourlyTotalsFooter = document.createElement("td");
+  hourlyTotalsFooter.textContent = "Totals";
+  trEl.appendChild(hourlyTotalsFooter);
+
+  // Add up the totals for each column (time slot)
+  for (var i = 0; i < times.length; i++) {
+    var tdEl = document.createElement("td");
+    var columnTotal = 0;
+    for (var storeArrayIndex = 0; storeArrayIndex < stores.length; storeArrayIndex++) {
+      columnTotal += stores[storeArrayIndex].cookiesEachHour[i];
+    }
+    tdEl.textContent = columnTotal;
+    trEl.appendChild(tdEl);
+  }
+
+  // Adds up the store totals column
+  var dailyTotalFooter = document.createElement("td");
+  var dailyTotalCookies = 0;
+
+  for (var i = 0; i < stores.length; i++) {
+    dailyTotalCookies += stores[i].totalCookiesPerDay;
+  }
+  dailyTotalFooter.textContent = dailyTotalCookies;
+  trEl.appendChild(dailyTotalFooter);
+
+  // Adds the finished footer row to the table
+  cookieTable.appendChild(trEl);
+}
+
+// Makes the header row for the employee table
+function makeEmployeeHeader() {
+  // Creates the row element to hold the header row
+  var trEl = document.createElement("tr");
+
+  // Creates the header element for the store name label
+  var locationHeader = document.createElement("th");
+  locationHeader.textContent = "Location";
+  trEl.appendChild(locationHeader);
+
+  // Creates the header elements for the times
+  for (var i = 0; i < times.length; i++) {
+    var thEl = document.createElement("th");
+    thEl.textContent = times[i];
+    trEl.appendChild(thEl);
+  }
+
+  // Creates the header element for the total label
+  var totalHeader = document.createElement("th");
+  totalHeader.textContent = "Daily Location Total";
+  trEl.appendChild(totalHeader);
+
+  employeeTable.appendChild(trEl);
+}
+
+// Makes the rows for the projected number of employees needed
+function makeEmployeeRows() {
+
+  // Makes the rows for each store
+  for (var i = 0; i < stores.length; i++) {
+
+    // Makes the row element
+    var trEl = document.createElement("tr");
+
+    // Gets the store names for each row
+    var storeEl = document.createElement("td");
+    storeEl.textContent = stores[i].location;
+    trEl.appendChild(storeEl);
+
+    // Gets the projected employees needed for each hour
+    for (var hour = 0; hour < times.length; hour++) {
+      var tdEl = document.createElement("td");
+      var employeesNeeded = Math.ceil(stores[i].cookiesEachHour[hour] / 20);
+      tdEl.textContent = employeesNeeded;
+      trEl.appendChild(tdEl);
+    }
+
+    // Adds the data entry for the total employees needed each day
+    var totalTdEl = document.createElement("td");
+    totalTdEl.textContent = Math.ceil(stores[i].totalCookiesPerDay / 20);
+    trEl.appendChild(totalTdEl);
+
+    // Appends the completed row to the table tag
+    employeeTable.appendChild(trEl);
+  }
+}
+
+// Make the footer row for the employees needed table
+function makeEmployeeFooter() {
+  var trEl = document.createElement("tr");
+
+  var hourlyTotalsFooter = document.createElement("td");
+  hourlyTotalsFooter.textContent = "Totals";
+  trEl.appendChild(hourlyTotalsFooter);
+
+  // Add up the totals for each column (time slot)
+  for (var i = 0; i < times.length; i++) {
+    var tdEl = document.createElement("td");
+    var columnTotal = 0;
+    for (var storeArrayIndex = 0; storeArrayIndex < stores.length; storeArrayIndex++) {
+      columnTotal += Math.ceil(stores[storeArrayIndex].cookiesEachHour[i] / 20);
+    }
+    tdEl.textContent = columnTotal;
+    trEl.appendChild(tdEl);
+  }
+
+  // Adds up the store totals column
+  var dailyTotalFooter = document.createElement("td");
+  var dailyTotalCookies = 0;
+
+  for (var i = 0; i < stores.length; i++) {
+    dailyTotalCookies += Math.ceil(stores[i].totalCookiesPerDay / 20);
+  }
+  dailyTotalFooter.textContent = dailyTotalCookies;
+  trEl.appendChild(dailyTotalFooter);
+
+  // Adds the finished footer row to the table
+  employeeTable.appendChild(trEl);
+}
+
+
+// Creates the table for projected cookie sales
+makeTableHeader();
+makeTableRows();
+makeTableFooter();
+
+// Creates the table for projected employee table
+makeEmployeeHeader();
+makeEmployeeRows();
+makeEmployeeFooter();

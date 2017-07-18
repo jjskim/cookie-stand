@@ -77,7 +77,7 @@ var seatac = {
     var seatacUL = document.getElementById("seatac_airport");
     // Need a for loop to iterate over the array of cookies per hour
     for (var l = 0; l < this.cookiesEachHour.length; l++) {
-
+      
       // Step 1: Create an element
       var liEl = document.createElement("li");
 

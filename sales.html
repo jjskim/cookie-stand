@@ -8,6 +8,26 @@
   <body>
     <h1>Salmon Cookie Store Projections</h1>
 
+    <form id="store_form">
+      <fieldset>
+        <legend>Enter a new store</legend>
+
+        <label for="location">Location: </label>
+        <input name="location" type="text" />
+
+        <label for="min_customers">Minimum Customers Per Hour: </label>
+        <input name="min_customers" type="text" />
+
+        <label for="max_customers">Maximum Customers Per Hour: </label>
+        <input name="max_customers" type="text" />
+
+        <label for="avg_cookies">Average Cookies Per Customer: </label>
+        <input name="avg_cookies" type="text" />
+
+        <button type="submit">Create store</button>
+      </fieldset>
+    </form>
+
     <h2>Projected Cookie Sales</h2>
     <table id="sales_table">
     </table>

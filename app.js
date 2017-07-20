@@ -1,18 +1,14 @@
 'use: strict;'
 
-// Times to display each number of cookie sales
+// =========================== Global variables and Arrays ========================= //
+
 var times = ["6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm"];
+var stores = [];    // Array to store the stores
+var cookieTable = document.getElementById("sales_table");     // Table of stores sales
+var employeeTable = document.getElementById("employee_table"); // Table of employees needed
+var storeForm = document.getElementById("store_form");        // Form to create new stores
 
-// Array to store the stores
-var stores = [];
-
-// Grab the "Parent Element" that will dictate where the sales table will go
-var cookieTable = document.getElementById("sales_table");
-
-// Grab the "Parent Element" that will dictate where the employees table will go
-var employeeTable = document.getElementById("employee_table");
-
-// object constructor for a single store
+// Defines the constructor for a Store object
 function Store(location, minCustomersPerHour, maxCustomersPerHour, averageCookiesPerCustomer) {
   this.location = location;
   this.minCustomersPerHour = minCustomersPerHour;
@@ -20,58 +16,67 @@ function Store(location, minCustomersPerHour, maxCustomersPerHour, averageCookie
   this.averageCookiesPerCustomer = averageCookiesPerCustomer;
   this.customersEachHour = [];
   this.cookiesEachHour = [];
-  this.totalCookiesPerDay = 0;
-
-  this.generateCustomers = function() {
-    for (var i = 0; i < times.length; i++) {
-      this.customersEachHour.push(Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour + 1)) + this.minCustomersPerHour);
-    }
-  };
-
-  this.generateSales = function() {
-    this.generateCustomers();
-    for (var i = 0; i < times.length; i++) {
-      this.cookiesEachHour.push(Math.ceil(this.customersEachHour[i] * this.averageCookiesPerCustomer));
-    }
-  };
-
-  this.dailyTotal = function() {
-    this.generateSales();
-    for (var i = 0; i < times.length; i++) {
-      this.totalCookiesPerDay += this.cookiesEachHour[i];
-    }
-  };
-
-  this.render = function() {
-
-    // Calls the dailyTotal method to generate cookies & customers per hours
-    // i.e. generates the data to display
-    this.dailyTotal();
-
-    // Makes the row
-    var trEl = document.createElement("tr");
-
-    // For the store name data entry
-    var storeName = document.createElement("td");
-    storeName.textContent = this.location;
-    trEl.appendChild(storeName);
-
-    // For each cookies per hour
-    for (var i = 0; i < times.length; i++) {
-      var tdEl = document.createElement("td");
-      tdEl.textContent = this.cookiesEachHour[i];
-      trEl.appendChild(tdEl);
-    }
-
-    // For the daily total entry
-    var dailyTotal = document.createElement("td");
-    dailyTotal.textContent = this.totalCookiesPerDay;
-    trEl.appendChild(dailyTotal);
-
-    // Appends the completed row to the table tag
-    cookieTable.appendChild(trEl);
-  };
+  this.totalCookiesPerDay;
 }
+
+// Fills a Store object's customersEachHour array with random number of customers each hours
+//   based on minCustomersPerHour and maxCustomersPerHour
+Store.prototype.generateCustomers = function() {
+  for (var i = 0; i < times.length; i++) {
+    this.customersEachHour.push(Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour + 1)) + this.minCustomersPerHour);
+  }
+};
+
+// Fills a Store object's cookiesEachHour array with number of cookies sold for each hour
+//   based on the values inside customersEachHour, and the Store object's avgCookiesPerCustomer
+Store.prototype.generateSales = function() {
+  this.generateCustomers();
+  for (var i = 0; i < times.length; i++) {
+    this.cookiesEachHour.push(Math.ceil(this.customersEachHour[i] * this.averageCookiesPerCustomer));
+  }
+};
+
+// Sums all of a Store object's numbers of cookies sold each hour and assigns that value to
+//   totalCookiesPerDay variable
+Store.prototype.dailyTotal = function() {
+  this.generateSales();
+  this.totalCookiesPerDay = 0;
+  for (var i = 0; i < times.length; i++) {
+    this.totalCookiesPerDay += this.cookiesEachHour[i];
+  }
+};
+
+// Renders a Store object's name, hourly cookies sold, and daily total of cookies sold
+//   as a single row within a table to the DOM
+Store.prototype.render = function() {
+
+  // Calls the dailyTotal method to generate cookies & customers per hours
+  // i.e. generates the data to display
+  this.dailyTotal();
+
+  // Makes the row element
+  var trEl = document.createElement("tr");
+
+  // For the store name data cell
+  var storeName = document.createElement("td");
+  storeName.textContent = this.location;
+  trEl.appendChild(storeName);
+
+  // Makes all the cookies per hour data cells
+  for (var i = 0; i < times.length; i++) {
+    var tdEl = document.createElement("td");
+    tdEl.textContent = this.cookiesEachHour[i];
+    trEl.appendChild(tdEl);
+  }
+
+  // For the daily total data cell
+  var dailyTotal = document.createElement("td");
+  dailyTotal.textContent = this.totalCookiesPerDay;
+  trEl.appendChild(dailyTotal);
+
+  // Appends the completed row to the table element
+  cookieTable.appendChild(trEl);
+};
 
 var pike = new Store("1st and Pike", 23, 65, 6.3);
 var seatac = new Store("SeaTac Airport", 3, 24, 1.2);
@@ -85,6 +90,47 @@ stores.push(seatac);
 stores.push(seattleCenter);
 stores.push(capitolHill);
 stores.push(alki);
+
+// ========================================================================================= //
+
+
+
+// ========================================================================================= //
+
+// The event handler
+
+function handleStoreSubmit(event) {
+
+  event.preventDefault(); // because Sam told me to
+
+  // Validation to prevent empty form fields -- because Sam told me to
+  if (!event.target.location.value || !event.target.min_customers.value || !event.target.max_customers.value || !event.target.avg_cookies.value) {
+    return alert('Fields cannot be empty!');
+  }
+
+  var newLocation = event.target.location.value;
+  var newMinCustomers = parseInt(event.target.min_customers.value);
+  var newMaxCustomers = parseInt(event.target.max_customers.value);
+  var newAvgCookies = parseInt(event.target.avg_cookies.value);
+
+  var newStore = new Store(newLocation, newMinCustomers, newMaxCustomers, newAvgCookies);
+
+  // clears the input fields
+  event.target.location.value = null;
+  event.target.min_customers.value = null;
+  event.target.max_customers.value = null;
+  event.target.avg_cookies.value = null;
+
+  stores.push(newStore);
+  renderAllStores();
+}
+
+// ========================================================================================= //
+
+storeForm.addEventListener("submit", handleStoreSubmit);
+
+// ========================================================================================= //
+
 
 // Creates the header row of the table:
 // Creates an entry for location
@@ -115,12 +161,6 @@ function makeTableHeader() {
   cookieTable.appendChild(trEl);
 }
 
-// Function to render each store
-function makeTableRows() {
-  for (var i = 0; i < stores.length; i++) {
-    stores[i].render();
-  }
-}
 
 // Stretch Goal
 // Make the footer table that totals each column
@@ -271,13 +311,25 @@ function makeEmployeeFooter() {
   employeeTable.appendChild(trEl);
 }
 
+// Function to render each store
+function renderAllStores() {
+
+  cookieTable.innerHTML = "";
+  employeeTable.innerHTML = "";
+
+
+  // This block is for making the cookie sales table
+  makeTableHeader();
+  for (var i = 0; i < stores.length; i++) {       // renders all the cookie sales rows
+    stores[i].render();
+  }
+  makeTableFooter();
+
+  // This block is for making the employees needed table
+  makeEmployeeHeader();
+  makeEmployeeRows();
+  makeEmployeeFooter();
+}
 
 // Creates the table for projected cookie sales
-makeTableHeader();
-makeTableRows();
-makeTableFooter();
-
-// Creates the table for projected employee table
-makeEmployeeHeader();
-makeEmployeeRows();
-makeEmployeeFooter();
+renderAllStores();

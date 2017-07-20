@@ -185,7 +185,7 @@ function makeTableFooter() {
   var dailyTotalCookies = 0;
 
   for (var j = 0; j < stores.length; j++) {
-    dailyTotalCookies += stores[i].totalCookiesPerDay;
+    dailyTotalCookies += stores[j].totalCookiesPerDay;
   }
   dailyTotalFooter.textContent = dailyTotalCookies;
   trEl.appendChild(dailyTotalFooter);
@@ -295,10 +295,10 @@ function makeEmployeeFooter() {
 
   for (var j = 0; j < stores.length; j++) {
     for (var hour = 0; hour < times.length; hour++) {
-      if (Math.ceil(stores[i].customersEachHour[hour] / 20 < 2)) {
+      if (Math.ceil(stores[j].customersEachHour[hour] / 20 < 2)) {
         dailyTotalWorkers += 2;
       } else {
-        dailyTotalWorkers += Math.ceil(stores[i].customersEachHour[hour] / 20);
+        dailyTotalWorkers += Math.ceil(stores[j].customersEachHour[hour] / 20);
       }
     }
   }

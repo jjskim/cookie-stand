@@ -93,26 +93,15 @@ stores.push(alki);
 
 // ========================================================================================= //
 
-
-
-// ========================================================================================= //
-
 // The event handler
-
 function handleStoreSubmit(event) {
 
   event.preventDefault(); // because Sam told me to
 
-  // Validation to prevent empty form fields -- because Sam told me to
-  // if (!event.target.location.value || !event.target.min_customers.value || !event.target.max_customers.value || !event.target.avg_cookies.value) {
-  //   return alert('Fields cannot be empty!');
-  // }
-
-
   var newLocation = event.target.location.value;
   var newMinCustomers = parseInt(event.target.min_customers.value);
   var newMaxCustomers = parseInt(event.target.max_customers.value);
-  var newAvgCookies = parseInt(event.target.avg_cookies.value);
+  var newAvgCookies = parseFloat(event.target.avg_cookies.value);
 
   // clears the input fields
   event.target.location.value = null;
@@ -120,27 +109,11 @@ function handleStoreSubmit(event) {
   event.target.max_customers.value = null;
   event.target.avg_cookies.value = null;
 
-  // for (var i = 0; i < stores.length; i++) {
-  //   if (newLocation === store[i].location) {
-  //     stores[i].minCustomersPerHour = newMinCustomers;
-  //     stores[i].maxCustomersPerHour = newMaxCustomers;
-  //     stores[i].averageCookiesPerCustomer = newAvgCookies;
-  //   }
-  // }
-
   var newStore = new Store(newLocation, newMinCustomers, newMaxCustomers, newAvgCookies);
-
 
   stores.push(newStore);
   renderAllStores();
 }
-
-// ========================================================================================= //
-
-storeForm.addEventListener("submit", handleStoreSubmit);
-
-// ========================================================================================= //
-
 
 // Creates the header row of the table:
 // Creates an entry for location
@@ -170,7 +143,6 @@ function makeTableHeader() {
 
   cookieTable.appendChild(trEl);
 }
-
 
 // Stretch Goal
 // Make the footer table that totals each column
@@ -277,12 +249,12 @@ function makeEmployeeRows() {
 
 // Make the footer row for the employees needed table
 function makeEmployeeFooter() {
+
   var trEl = document.createElement("tr");
 
   var hourlyTotalsFooter = document.createElement("td");
   hourlyTotalsFooter.textContent = "Totals";
   trEl.appendChild(hourlyTotalsFooter);
-
 
   // Add up the totals for each column (time slot)
   for (var i = 0; i < times.length; i++) {
@@ -327,7 +299,6 @@ function renderAllStores() {
   cookieTable.innerHTML = "";
   employeeTable.innerHTML = "";
 
-
   // This block is for making the cookie sales table
   makeTableHeader();
   for (var i = 0; i < stores.length; i++) {       // renders all the cookie sales rows
@@ -343,3 +314,5 @@ function renderAllStores() {
 
 // Creates the table for projected cookie sales
 renderAllStores();
+
+storeForm.addEventListener("submit", handleStoreSubmit);

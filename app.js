@@ -108,18 +108,28 @@ function handleStoreSubmit(event) {
   //   return alert('Fields cannot be empty!');
   // }
 
+
   var newLocation = event.target.location.value;
   var newMinCustomers = parseInt(event.target.min_customers.value);
   var newMaxCustomers = parseInt(event.target.max_customers.value);
   var newAvgCookies = parseInt(event.target.avg_cookies.value);
-
-  var newStore = new Store(newLocation, newMinCustomers, newMaxCustomers, newAvgCookies);
 
   // clears the input fields
   event.target.location.value = null;
   event.target.min_customers.value = null;
   event.target.max_customers.value = null;
   event.target.avg_cookies.value = null;
+
+  // for (var i = 0; i < stores.length; i++) {
+  //   if (newLocation === store[i].location) {
+  //     stores[i].minCustomersPerHour = newMinCustomers;
+  //     stores[i].maxCustomersPerHour = newMaxCustomers;
+  //     stores[i].averageCookiesPerCustomer = newAvgCookies;
+  //   }
+  // }
+
+  var newStore = new Store(newLocation, newMinCustomers, newMaxCustomers, newAvgCookies);
+
 
   stores.push(newStore);
   renderAllStores();

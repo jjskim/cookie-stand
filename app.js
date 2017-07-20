@@ -22,6 +22,7 @@ function Store(location, minCustomersPerHour, maxCustomersPerHour, averageCookie
 // Fills a Store object's customersEachHour array with random number of customers each hours
 //   based on minCustomersPerHour and maxCustomersPerHour
 Store.prototype.generateCustomers = function() {
+  // this.customersEachHour = [];
   for (var i = 0; i < times.length; i++) {
     this.customersEachHour.push(Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour + 1)) + this.minCustomersPerHour);
   }
@@ -30,6 +31,7 @@ Store.prototype.generateCustomers = function() {
 // Fills a Store object's cookiesEachHour array with number of cookies sold for each hour
 //   based on the values inside customersEachHour, and the Store object's avgCookiesPerCustomer
 Store.prototype.generateSales = function() {
+  // this.cookiesEachHour = [];
   this.generateCustomers();
   for (var i = 0; i < times.length; i++) {
     this.cookiesEachHour.push(Math.ceil(this.customersEachHour[i] * this.averageCookiesPerCustomer));
@@ -49,6 +51,8 @@ Store.prototype.dailyTotal = function() {
 // Renders a Store object's name, hourly cookies sold, and daily total of cookies sold
 //   as a single row within a table to the DOM
 Store.prototype.render = function() {
+
+
 
   // Calls the dailyTotal method to generate cookies & customers per hours
   // i.e. generates the data to display
@@ -108,6 +112,18 @@ function handleStoreSubmit(event) {
   event.target.min_customers.value = null;
   event.target.max_customers.value = null;
   event.target.avg_cookies.value = null;
+
+  for (var i = 0; i < stores.length; i++) {
+    if (newLocation === stores[i].location) {
+      stores[i].minCustomersPerHour = newMinCustomers;
+      stores[i].maxCustomersPerHour = newMaxCustomers;
+      stores[i].averageCookiesPerCustomer = newAvgCookies;
+      stores[i].customersEachHour = [];
+      stores[i].cookiesEachHour = [];
+      renderAllStores();
+      return;
+    }
+  }
 
   var newStore = new Store(newLocation, newMinCustomers, newMaxCustomers, newAvgCookies);
 

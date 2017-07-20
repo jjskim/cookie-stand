@@ -104,9 +104,9 @@ function handleStoreSubmit(event) {
   event.preventDefault(); // because Sam told me to
 
   // Validation to prevent empty form fields -- because Sam told me to
-  if (!event.target.location.value || !event.target.min_customers.value || !event.target.max_customers.value || !event.target.avg_cookies.value) {
-    return alert('Fields cannot be empty!');
-  }
+  // if (!event.target.location.value || !event.target.min_customers.value || !event.target.max_customers.value || !event.target.avg_cookies.value) {
+  //   return alert('Fields cannot be empty!');
+  // }
 
   var newLocation = event.target.location.value;
   var newMinCustomers = parseInt(event.target.min_customers.value);

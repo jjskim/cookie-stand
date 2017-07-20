@@ -1,12 +1,12 @@
-'use: strict;'
+'use: strict';
 
 // =========================== Global variables and Arrays ========================= //
 
-var times = ["6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm"];
+var times = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
 var stores = [];    // Array to store the stores
-var cookieTable = document.getElementById("sales_table");     // Table of stores sales
-var employeeTable = document.getElementById("employee_table"); // Table of employees needed
-var storeForm = document.getElementById("store_form");        // Form to create new stores
+var cookieTable = document.getElementById('sales_table');     // Table of stores sales
+var employeeTable = document.getElementById('employee_table'); // Table of employees needed
+var storeForm = document.getElementById('store_form');        // Form to create new stores
 
 // Defines the constructor for a Store object
 function Store(location, minCustomersPerHour, maxCustomersPerHour, averageCookiesPerCustomer) {
@@ -59,22 +59,22 @@ Store.prototype.render = function() {
   this.dailyTotal();
 
   // Makes the row element
-  var trEl = document.createElement("tr");
+  var trEl = document.createElement('tr');
 
   // For the store name data cell
-  var storeName = document.createElement("td");
+  var storeName = document.createElement('td');
   storeName.textContent = this.location;
   trEl.appendChild(storeName);
 
   // Makes all the cookies per hour data cells
   for (var i = 0; i < times.length; i++) {
-    var tdEl = document.createElement("td");
+    var tdEl = document.createElement('td');
     tdEl.textContent = this.cookiesEachHour[i];
     trEl.appendChild(tdEl);
   }
 
   // For the daily total data cell
-  var dailyTotal = document.createElement("td");
+  var dailyTotal = document.createElement('td');
   dailyTotal.textContent = this.totalCookiesPerDay;
   trEl.appendChild(dailyTotal);
 
@@ -82,11 +82,11 @@ Store.prototype.render = function() {
   cookieTable.appendChild(trEl);
 };
 
-var pike = new Store("1st and Pike", 23, 65, 6.3);
-var seatac = new Store("SeaTac Airport", 3, 24, 1.2);
-var seattleCenter = new Store("Seattle Center", 11, 38, 3.7);
-var capitolHill = new Store("Capitol Hill", 20, 38, 2.3);
-var alki = new Store("Alki", 2, 16, 4.6);
+var pike = new Store('1st and Pike', 23, 65, 6.3);
+var seatac = new Store('SeaTac Airport', 3, 24, 1.2);
+var seattleCenter = new Store('Seattle Center', 11, 38, 3.7);
+var capitolHill = new Store('Capitol Hill', 20, 38, 2.3);
+var alki = new Store('Alki', 2, 16, 4.6);
 
 
 stores.push(pike);
@@ -138,23 +138,23 @@ function handleStoreSubmit(event) {
 function makeTableHeader() {
 
   // Creates the row element to hold the header row
-  var trEl = document.createElement("tr");
+  var trEl = document.createElement('tr');
 
   // Creates the header element for the store name label
-  var locationHeader = document.createElement("th");
-  locationHeader.textContent = "Location";
+  var locationHeader = document.createElement('th');
+  locationHeader.textContent = 'Location';
   trEl.appendChild(locationHeader);
 
   // Creates the header elements for the times
   for (var i = 0; i < times.length; i++) {
-    var thEl = document.createElement("th");
+    var thEl = document.createElement('th');
     thEl.textContent = times[i];
     trEl.appendChild(thEl);
   }
 
   // Creates the header element for the total label
-  var totalHeader = document.createElement("th");
-  totalHeader.textContent = "Daily Location Total";
+  var totalHeader = document.createElement('th');
+  totalHeader.textContent = 'Daily Location Total';
   trEl.appendChild(totalHeader);
 
   cookieTable.appendChild(trEl);
@@ -163,15 +163,15 @@ function makeTableHeader() {
 // Stretch Goal
 // Make the footer table that totals each column
 function makeTableFooter() {
-  var trEl = document.createElement("tr");
+  var trEl = document.createElement('tr');
 
-  var hourlyTotalsFooter = document.createElement("td");
-  hourlyTotalsFooter.textContent = "Totals";
+  var hourlyTotalsFooter = document.createElement('td');
+  hourlyTotalsFooter.textContent = 'Totals';
   trEl.appendChild(hourlyTotalsFooter);
 
   // Add up the totals for each column (time slot)
   for (var i = 0; i < times.length; i++) {
-    var tdEl = document.createElement("td");
+    var tdEl = document.createElement('td');
     var columnTotal = 0;
     for (var storeArrayIndex = 0; storeArrayIndex < stores.length; storeArrayIndex++) {
       columnTotal += stores[storeArrayIndex].cookiesEachHour[i];
@@ -181,10 +181,10 @@ function makeTableFooter() {
   }
 
   // Adds up the store totals column
-  var dailyTotalFooter = document.createElement("td");
+  var dailyTotalFooter = document.createElement('td');
   var dailyTotalCookies = 0;
 
-  for (var i = 0; i < stores.length; i++) {
+  for (var j = 0; j < stores.length; j++) {
     dailyTotalCookies += stores[i].totalCookiesPerDay;
   }
   dailyTotalFooter.textContent = dailyTotalCookies;
@@ -197,23 +197,23 @@ function makeTableFooter() {
 // Makes the header row for the employee table
 function makeEmployeeHeader() {
   // Creates the row element to hold the header row
-  var trEl = document.createElement("tr");
+  var trEl = document.createElement('tr');
 
   // Creates the header element for the store name label
-  var locationHeader = document.createElement("th");
-  locationHeader.textContent = "Location";
+  var locationHeader = document.createElement('th');
+  locationHeader.textContent = 'Location';
   trEl.appendChild(locationHeader);
 
   // Creates the header elements for the times
   for (var i = 0; i < times.length; i++) {
-    var thEl = document.createElement("th");
+    var thEl = document.createElement('th');
     thEl.textContent = times[i];
     trEl.appendChild(thEl);
   }
 
   // Creates the header element for the total label
-  var totalHeader = document.createElement("th");
-  totalHeader.textContent = "Daily Location Total";
+  var totalHeader = document.createElement('th');
+  totalHeader.textContent = 'Daily Location Total';
   trEl.appendChild(totalHeader);
 
   employeeTable.appendChild(trEl);
@@ -226,10 +226,10 @@ function makeEmployeeRows() {
   for (var i = 0; i < stores.length; i++) {
 
     // Makes the row element
-    var trEl = document.createElement("tr");
+    var trEl = document.createElement('tr');
 
     // Gets the store names for each row
-    var storeEl = document.createElement("td");
+    var storeEl = document.createElement('td');
     storeEl.textContent = stores[i].location;
     trEl.appendChild(storeEl);
 
@@ -238,7 +238,7 @@ function makeEmployeeRows() {
 
     // Gets the projected employees needed for each hour
     for (var hour = 0; hour < times.length; hour++) {
-      var tdEl = document.createElement("td");
+      var tdEl = document.createElement('td');
       var employeesNeeded = Math.ceil(stores[i].customersEachHour[hour] / 20);
       if (employeesNeeded < 2) {
         runningEmployeeCount += 2;
@@ -252,7 +252,7 @@ function makeEmployeeRows() {
     }
 
     // Adds the data entry for the total employees needed each day
-    var totalTdEl = document.createElement("td");
+    var totalTdEl = document.createElement('td');
     totalTdEl.textContent = runningEmployeeCount;
 
     // totalTdEl.textContent = Math.ceil(stores[i].totalCookiesPerDay / 20);
@@ -266,15 +266,15 @@ function makeEmployeeRows() {
 // Make the footer row for the employees needed table
 function makeEmployeeFooter() {
 
-  var trEl = document.createElement("tr");
+  var trEl = document.createElement('tr');
 
-  var hourlyTotalsFooter = document.createElement("td");
-  hourlyTotalsFooter.textContent = "Totals";
+  var hourlyTotalsFooter = document.createElement('td');
+  hourlyTotalsFooter.textContent = 'Totals';
   trEl.appendChild(hourlyTotalsFooter);
 
   // Add up the totals for each column (time slot)
   for (var i = 0; i < times.length; i++) {
-    var tdEl = document.createElement("td");
+    var tdEl = document.createElement('td');
     var columnTotal = 0;
     for (var storeArrayIndex = 0; storeArrayIndex < stores.length; storeArrayIndex++) {
       if (Math.ceil(stores[storeArrayIndex].customersEachHour[i] / 20) < 2) {
@@ -288,12 +288,12 @@ function makeEmployeeFooter() {
   }
 
   // Adds up the store totals column
-  var dailyTotalFooter = document.createElement("td");
+  var dailyTotalFooter = document.createElement('td');
 
   // Make a counter for the daily total workers
   var dailyTotalWorkers = 0;
 
-  for (var i = 0; i < stores.length; i++) {
+  for (var j = 0; j < stores.length; j++) {
     for (var hour = 0; hour < times.length; hour++) {
       if (Math.ceil(stores[i].customersEachHour[hour] / 20 < 2)) {
         dailyTotalWorkers += 2;
@@ -312,8 +312,8 @@ function makeEmployeeFooter() {
 // Function to render each store
 function renderAllStores() {
 
-  cookieTable.innerHTML = "";
-  employeeTable.innerHTML = "";
+  cookieTable.innerHTML = '';
+  employeeTable.innerHTML = '';
 
   // This block is for making the cookie sales table
   makeTableHeader();
@@ -331,4 +331,4 @@ function renderAllStores() {
 // Creates the table for projected cookie sales
 renderAllStores();
 
-storeForm.addEventListener("submit", handleStoreSubmit);
+storeForm.addEventListener('submit', handleStoreSubmit);

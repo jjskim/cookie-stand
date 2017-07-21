@@ -21,7 +21,7 @@ main {
   color: black;
 }
 
-#menu {
+#welcome {
   background-image: url(https://raw.githubusercontent.com/codefellows/seattle-201d24/master/class-06-dom-objects-domain_modeling/lab/assets/salmon.png);
   background-color: #006bb3;
   background-repeat: no-repeat;
@@ -35,7 +35,7 @@ main {
   text-align: center;
 }
 
-#menu > h2 {
+#welcome > h2 {
   font-family: Georgia, serif;
   color: #e6f2ff;
 }
@@ -71,6 +71,16 @@ aside>ul>p {
 
 aside>h3 {
   text-align: center;
+  margin-bottom: 20px;
+}
+
+aside>ul>li {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+aside>ul>p {
+  margin-bottom: 20px;
 }
 
 .hero-image {
@@ -91,6 +101,17 @@ aside>h3 {
   transform: translate(-50%, -50%);
   font-size: 24px;
   letter-spacing:7px;
+}
+
+footer {
+  border: solid white;
+  padding: 20px;
+  background-image: url(http://i.imgur.com/hn2Ukum.jpg);
+  font-size: 10px;
+}
+
+#family {
+  font-style: italic;
 }
 
 /* CSS for the table elements */
